@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Trang Quản Trị</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+</head>
+<body>
+<div class="d-flex" id="mainLayout">
+    <!-- Sidebar -->
+    <nav class="d-flex flex-column justify-content-between flex-shrink-0 p-3 bg-dark text-white" style="width: 250px;">
+        <div>
+            <a href="/admin" class="sidebar-header text-white text-decoration-none mb-3">
+                <i class="fas fa-tools"></i>
+                <span>Admin Panel</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto" id="adminTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a href="/admin" class="nav-link" th:classappend="${activeTab == 'dashboard'} ? 'active'">
+                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a th:href="@{/admin(activeTab='products')}"
+                       class="nav-link"
+                       th:classappend="${activeTab == 'products'} ? 'active'">
+                        <i class="fas fa-box me-2"></i> Sản phẩm
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a th:href="@{/admin(activeTab='orders')}"
+                       class="nav-link"
+                       th:classappend="${activeTab == 'orders'} ? 'active'">
+                        <i class="fas fa-receipt me-2"></i> Đơn hàng
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a th:href="@{/admin(activeTab='customers')}"
+                       class="nav-link"
+                       th:classappend="${activeTab == 'customers'} ? 'active'">
+                        <i class="fas fa-users me-2"></i> Khách hàng
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a th:href="@{/admin(activeTab='reports')}"
+                       class="nav-link"
+                       th:classappend="${activeTab == 'reports'} ? 'active'">
+                        <i class="fas fa-chart-pie me-2"></i> Báo cáo
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Nút quay lại trang chủ -->
+        <div>
+            <a href="/" class="btn btn-outline-light w-100">
+                <i class="fas fa-home me-2"></i> Trang chủ
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4">
+        <div class="tab-content" id="adminTabContent">
+
+            <!-- Dashboard tab -->
+            <div class="tab-pane fade" th:classappend="${activeTab == 'dashboard'} ? 'show active'" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <h2 class="mb-4">Dashboard</h2>
+
+                <div class="row g-3 mb-4">
+                    <!-- Các card tổng quan -->
+                    <div class="col-md-3">
+                        <div class="card text-white bg-primary shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-3">Tổng sản phẩm</h5>
+                                <p class="card-text fs-3 fw-bold" th:text="${totalProducts}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-3">Tổng đơn hàng</h5>
+                                <p class="card-text fs-3 fw-bold" th:text="${totalOrders}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-info shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-3">Tổng khách hàng</h5>
+                                <p class="card-text fs-3 fw-bold" th:text="${totalCustomers}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-warning shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-3">Doanh thu tháng trước</h5>
+                                <p class="card-text fs-3 fw-bold" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 2, 'POINT')}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần Top 5 sản phẩm bán chạy nhất -->
+                <div class="mt-4">
+                    <h5 class="mb-3">5 sản phẩm bán chạy nhất</h5>
+                    <div class="table-responsive shadow-sm rounded">
+                        <table class="table table-striped table-hover align-middle">
+                            <thead class="table-dark">
+                            <tr>
+                                <th scope="col" style="width: 40px;">#</th>
+                                <th scope="col" style="width: 80px;">Ảnh</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col" style="width: 120px;">Số lượng bán</th>
+                                <th scope="col" style="width: 140px;">Doanh thu (VNĐ)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item, iterStat : ${top5BestSellingProducts}">
+                                <td th:text="${iterStat.count}" class="fw-bold">1</td>
+                                <td>
+                                    <img th:src="@{'/images/' + ${item.product.imageUrl}}" alt="Ảnh sản phẩm"
+                                         class="product-thumb" />
+                                </td>
+                                <td th:text="${item.product.name}">Tên sản phẩm</td>
+                                <td th:text="${item.totalQuantitySold}">0</td>
+                                <td th:text="${#numbers.formatDecimal(item.totalRevenue, 0, 'COMMA', 0, 'POINT')}">0</td>
+                            </tr>
+                            <tr th:if="${top5BestSellingProducts == null or #lists.isEmpty(top5BestSellingProducts)}">
+                                <td colspan="5" class="text-center py-4">Chưa có dữ liệu sản phẩm bán chạy.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Biểu đồ thống kê đơn hàng theo trạng thái và doanh thu theo tháng cùng hàng -->
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-4">
+                        <h5>Thống kê đơn hàng theo trạng thái</h5>
+                        <canvas id="orderStatusChart" style="width: 100%; max-height: 400px;"></canvas>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <h5>Thống kê doanh thu theo tháng</h5>
+                        <canvas id="revenueChart" style="width: 100%; max-height: 400px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <div class="tab-pane fade" th:classappend="${activeTab == 'products'} ? 'show active'" id="products" role="tabpanel" aria-labelledby="products-tab">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>Quản lý Sản phẩm</h2>
+                    <a href="/admin/products/create" class="btn btn-success">
+                        <i class="fas fa-plus-circle"></i> Thêm sản phẩm
+                    </a>
+                </div>
+
+                <!-- Form tìm kiếm và sắp xếp -->
+                <form method="get" th:action="@{/admin}" class="mb-3 d-flex align-items-center gap-2">
+                    <input type="hidden" name="activeTab" value="products" />
+                    <input type="text" name="productKeyword" class="form-control" placeholder="Tìm theo tên sản phẩm"
+                           th:value="${productKeyword}" style="max-width: 300px;" />
+                    <select name="productSort" class="form-select" style="max-width: 150px;" onchange="this.form.submit()">
+                        <option th:value="desc" th:selected="${sort == 'desc'}">Mới nhất</option>
+                        <option th:value="asc" th:selected="${sort == 'asc'}">Cũ nhất</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    <div class="col-auto">
+                        <a th:href="@{/admin(activeTab='products')}" class="btn btn-secondary">Xóa bộ lọc</a>
+                    </div>
+                </form>
+
+                <div th:if="${error}" th:text="${error}" class="text-danger"></div>
+
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Ảnh</th>
+                        <th>Tên</th>
+                        <th>Thương hiệu</th>
+                        <th>Giá gốc</th>
+                        <th>Giảm giá (%)</th>
+                        <th>Giá sau giảm</th>
+                        <th>Tồn kho</th>
+                        <th>Ngày tạo</th>
+                        <th class="thao-tac">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.id}">1</td>
+                        <td>
+                            <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Ảnh sản phẩm" style="height: 50px; width: auto;">
+                        </td>
+                        <td th:text="${product.name}">Sản phẩm A</td>
+                        <td th:text="${product.brand}">Apple</td>
+                        <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}">10,000,000</td>
+                        <td th:text="${product.discountPercent != null ? product.discountPercent : 0}">10</td>
+                        <td th:text="${#numbers.formatDecimal(product.priceAfterDiscount, 0, 'COMMA', 2, 'POINT')}">9,000,000</td>
+                        <td th:text="${product.stock}">100</td>
+                        <td th:text="${#temporals.format(product.createdAt, 'dd/MM/yyyy HH:mm')}">01/06/2025 12:00</td>
+                        <td class="thao-tac">
+                            <a th:href="@{/admin/products/edit/{id}(id=${product.id})}" class="btn btn-sm btn-primary">Sửa</a>
+                            <form th:action="@{/admin/products/delete/{id}(id=${product.id})}" method="post" style="display:inline-block"
+                                  onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(products)}">
+                        <td colspan="10" class="text-center">Không có sản phẩm nào</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Orders -->
+            <div class="tab-pane fade" th:classappend="${activeTab == 'orders'} ? 'show active'" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                <h2>Quản lý Đơn hàng</h2>
+
+                <!-- Bộ lọc trạng thái đơn hàng -->
+                <form method="get" th:action="@{/admin}" class="row g-3 align-items-center mb-4">
+                    <input type="hidden" name="activeTab" value="orders" />
+                    <div class="col-auto">
+                        <label for="status" class="col-form-label">Trạng thái:</label>
+                    </div>
+                    <div class="col-auto">
+                        <select id="status" name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="">Tất cả</option>
+                            <option th:each="st : ${T(com.example.demo.model.enums.OrderStatus).values()}"
+                                    th:value="${st.name()}"
+                                    th:text="${st.displayName}"
+                                    th:selected="${selectedStatus != null and st.name() == selectedStatus}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <label for="createdDate" class="col-form-label">Ngày đặt:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" id="createdDate" name="createdDate"
+                               class="form-control" th:value="${createdDate}">
+                    </div>
+                    <div class="col-auto">
+                        <label for="orderSort" class="col-form-label">Sắp xếp:</label>
+                    </div>
+                    <div class="col-auto">
+                        <select id="orderSort" name="orderSort" class="form-select" onchange="this.form.submit()">
+                            <option value="desc" th:selected="${orderSort == 'desc'}">Mới nhất</option>
+                            <option value="asc" th:selected="${orderSort == 'asc'}">Cũ nhất</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Lọc</button>
+                    </div>
+                    <div class="col-auto">
+                        <a th:href="@{/admin(activeTab='orders')}" class="btn btn-secondary">Xóa bộ lọc</a>
+                    </div>
+                </form>
+
+                <div th:if="${error}" th:text="${error}" class="text-danger mb-3"></div>
+
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Khách hàng</th>
+                        <th>Ngày đặt</th>
+                        <th>Trạng thái</th>
+                        <th class="thao-tac">Thao tác</th> <!-- thêm class -->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.id}">ID</td>
+                        <td th:text="${order.fullName}">Khách hàng</td>
+                        <td th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">Ngày đặt</td>
+                        <td th:text="${order.status.displayName}">Trạng thái</td>
+                        <td class="thao-tac">
+                            <a th:href="@{/admin/orders/{id}(id=${order.id})}"
+                               class="btn btn-info btn-sm">Chi tiết</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(orders)}">
+                        <td colspan="5" class="text-center">Không có đơn hàng nào</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+            <!-- Customers -->
+            <div class="tab-pane fade" th:classappend="${activeTab == 'customers'} ? 'show active'" id="customers" role="tabpanel" aria-labelledby="customers-tab">
+                <h2>Quản lý Khách hàng</h2>
+
+                <!-- Form tìm kiếm -->
+                <form class="mb-3" method="get" action="#" th:action="@{/admin}">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-auto">
+                            <input type="text" name="customerKeyword" class="form-control" placeholder="Tìm theo tên hoặc email"
+                                   th:value="${customerKeyword}">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                        <div class="col-auto">
+                            <a th:href="@{/admin(activeTab='customers')}" class="btn btn-secondary">Xóa bộ lọc</a>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Vai trò</th>
+                        <th class="thao-tac">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${customers}">
+                        <td th:text="${user.id}">ID</td>
+                        <td th:text="${user.fullName}">Tên</td>
+                        <td th:text="${user.email}">Email</td>
+                        <td th:text="${user.role}">Vai trò</td>
+                        <td class="thao-tac">
+                            <a th:href="@{/admin/customers/{id}(id=${user.id})}" class="btn btn-info btn-sm">Chi tiết</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(customers)}">
+                        <td colspan="5" class="text-center">Không có khách hàng nào</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Reports -->
+            <div class="tab-pane fade" th:classappend="${activeTab == 'reports'} ? 'show active'" id="reports" role="tabpanel" aria-labelledby="reports-tab">
+                <!-- Bộ lọc theo tháng năm -->
+                <div class="mb-4">
+                    <h3>Bộ lọc theo tháng năm</h3>
+                    <form th:action="@{/admin}" method="get">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="filterYear" class="form-label">Năm:</label>
+                                <select id="filterYear" name="filterYear" class="form-select">
+                                    <option value="" th:selected="${filterYear == null or filterYear == ''}">Tất cả</option>
+                                    <option th:each="year : ${#numbers.sequence(2020, 2025)}"
+                                            th:value="${year}"
+                                            th:text="${year}"
+                                            th:selected="${filterYear != null and filterYear == year.toString()}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="filterMonth" class="form-label">Tháng:</label>
+                                <select id="filterMonth" name="filterMonth" class="form-select">
+                                    <option value="" th:selected="${filterMonth == null or filterMonth == ''}">Tất cả</option>
+                                    <option th:each="month : ${#numbers.sequence(1, 12)}"
+                                            th:value="${month < 10 ? '0' + month : month}"
+                                            th:text="${month < 10 ? '0' + month : month}"
+                                            th:selected="${filterMonth != null and filterMonth == (month < 10 ? '0' + month : month.toString())}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 align-self-end">
+                                <button type="submit" class="btn btn-primary">Lọc</button>
+                                <a th:href="@{/admin(activeTab='reports')}" class="btn btn-secondary">Xóa lọc</a>
+                            </div>
+                        </div>
+                        <input type="hidden" name="activeTab" value="reports" />
+                    </form>
+                </div>
+
+                <!-- Bảng Tổng quan doanh thu -->
+                <h2>Báo cáo doanh thu tổng quan</h2>
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Tháng</th>
+                        <th>Tổng doanh thu</th>
+                        <th>Tổng đơn hàng</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="report : ${revenueReports}">
+                        <td th:text="${report.reportMonth}">Tháng</td>
+                        <td th:text="${#numbers.formatDecimal(report.totalRevenue, 0, 'COMMA', 2, 'POINT')}">Tổng doanh thu</td>
+                        <td th:text="${report.totalOrders}">Tổng đơn hàng</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(revenueReports)}">
+                        <td colspan="3" class="text-center">Không có báo cáo nào</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Bảng Chi tiết doanh thu theo sản phẩm -->
+                <h2 class="mt-4">Báo cáo doanh thu theo sản phẩm</h2>
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Mã sản phẩm</th>
+                        <th>Tháng</th>
+                        <th>Số lượng bán</th>
+                        <th>Doanh thu</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="productReport : ${productSalesReports}">
+                        <td th:text="${productReport.product.id}">Mã sản phẩm</td>
+                        <td th:text="${productReport.reportMonth}">Tháng</td>
+                        <td th:text="${productReport.totalQuantitySold}">Số lượng bán</td>
+                        <td th:text="${#numbers.formatDecimal(productReport.totalRevenue, 0, 'COMMA', 2, 'POINT')}">Doanh thu</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(productSalesReports)}">
+                        <td colspan="4" class="text-center">Không có báo cáo sản phẩm nào</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Icon lên đầu trang -->
+    <div id="scrollToTop" class="scroll-icon" title="Lên đầu trang">&#8679;</div>
+
+    <!-- Icon xuống cuối trang -->
+    <div id="scrollToBottom" class="scroll-icon" title="Xuống cuối trang">&#8681;</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Thêm thư viện Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Active tab khi load lại
+        var activeTab = /*[[${activeTab != null}]]*/ false ? '/*[[${activeTab}]]*/' : null;
+        if (activeTab) {
+            var tabElement = document.querySelector('#' + activeTab + '-tab');
+            if (tabElement) {
+                var tab = new bootstrap.Tab(tabElement);
+                tab.show();
+            }
+        }
+
+        // Scroll to top / bottom
+        const btnTop = document.getElementById('scrollToTop');
+        if (btnTop) {
+            btnTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        const btnBottom = document.getElementById('scrollToBottom');
+        if (btnBottom) {
+            btnBottom.addEventListener('click', () => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            });
+        }
+
+        // Biểu đồ đơn hàng theo trạng thái
+        const orderStatusCount = {
+            pending: /*[[${orderStatusCount.pending}]]*/ 0,
+            confirmed: /*[[${orderStatusCount.confirmed}]]*/ 0,
+            shipped: /*[[${orderStatusCount.shipped}]]*/ 0,
+            delivered: /*[[${orderStatusCount.delivered}]]*/ 0,
+            cancelled: /*[[${orderStatusCount.cancelled}]]*/ 0
+        };
+
+        const orderStatusCtx = document.getElementById('orderStatusChart').getContext('2d');
+        const orderStatusChart = new Chart(orderStatusCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Đang chờ', 'Đã xác nhận', 'Đã giao hàng', 'Đã nhận hàng', 'Đã huỷ'],
+                datasets: [{
+                    label: 'Số lượng đơn hàng',
+                    data: [
+                        orderStatusCount.pending,
+                        orderStatusCount.confirmed,
+                        orderStatusCount.shipped,
+                        orderStatusCount.delivered,
+                        orderStatusCount.cancelled
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 206, 86, 0.7)',   // vàng
+                        'rgba(54, 162, 235, 0.7)',   // xanh dương
+                        'rgba(75, 192, 192, 0.7)',   // xanh lá
+                        'rgba(153, 102, 255, 0.7)',  // tím
+                        'rgba(255, 99, 132, 0.7)'    // đỏ
+                    ],
+                    borderColor: [
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, position: 'top' },
+                    title: { display: true, text: 'Thống kê đơn hàng theo trạng thái' }
+                },
+                scales: {
+                    y: { beginAtZero: true, precision: 0 }
+                }
+            }
+        });
+
+        // Biểu đồ doanh thu theo tháng
+        var revenueLabels = /*[[${revenueLabels}]]*/ [];
+        var revenueData = /*[[${revenueData}]]*/ [];
+
+        revenueData = revenueData.map(function(val) {
+            return parseFloat(val);
+        });
+
+        var revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        var revenueChart = new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: revenueLabels,
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: revenueData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, position: 'top' },
+                    title: { display: true, text: 'Doanh thu theo tháng' }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('vi-VN') + ' đ';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thông tin tài khoản</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <!-- CSS riêng cho profile -->
+    <link rel="stylesheet" th:href="@{/css/profile.css}" />
+
+    <!-- Google Fonts: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Nút Trang chủ -->
+<a href="/" class="btn btn-light shadow-sm btn-home">
+    <i class="fa-solid fa-house me-1"></i> Trang chủ
+</a>
+
+<!-- Container chính, căn giữa dọc và ngang màn hình -->
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="profile-container" style="max-width: 600px; width: 100%; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+
+        <section class="profile-info">
+        <h2 class="mb-4 text-center">👤 Thông tin tài khoản</h2>
+
+        <!-- Thông báo thành công hoặc lỗi -->
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <!-- Form cập nhật thông tin -->
+        <form th:action="@{/profile}" th:object="${user}" method="post" class="d-flex flex-column gap-3">
+
+            <div class="row align-items-center mb-3">
+                <label for="username" class="col-sm-4 col-form-label">Tên đăng nhập</label>
+                <div class="col-sm-8">
+                    <input
+                            type="text"
+                            id="username"
+                            class="form-control"
+                            th:field="*{username}"
+                            disabled
+                    />
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-3">
+                <label for="fullName" class="col-sm-4 col-form-label">Họ và tên</label>
+                <div class="col-sm-8">
+                    <input
+                            type="text"
+                            id="fullName"
+                            class="form-control"
+                            th:field="*{fullName}"
+                            required
+                    />
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-3">
+                <label for="email" class="col-sm-4 col-form-label">Email</label>
+                <div class="col-sm-8">
+                    <input
+                            type="email"
+                            id="email"
+                            class="form-control"
+                            th:field="*{email}"
+                            required
+                    />
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-3">
+                <label for="phoneNumber" class="col-sm-4 col-form-label">Số điện thoại</label>
+                <div class="col-sm-8">
+                    <input
+                            type="text"
+                            id="phoneNumber"
+                            class="form-control"
+                            th:field="*{phoneNumber}"
+                    />
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-3">
+                <label for="createdAt" class="col-sm-4 col-form-label">Ngày tạo tài khoản</label>
+                <div class="col-sm-8">
+                    <input
+                            type="text"
+                            id="createdAt"
+                            class="form-control"
+                            th:value="${#dates.format(user.createdAt, 'dd/MM/yyyy HH:mm:ss')}"
+                            disabled
+                    />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">💾 Cập nhật</button>
+        </form>
+        </section>
+
+        <!-- Phần đánh giá đã viết -->
+        <section class="review-section">
+            <div th:if="${reviewSuccess}" class="alert alert-success" th:text="${reviewSuccess}"></div>
+            <div th:if="${reviewError}" class="alert alert-danger" th:text="${reviewError}"></div>
+
+        <div class="mt-5">
+            <h3>📝 Đánh giá đã viết</h3>
+
+            <div th:if="${#lists.isEmpty(reviews)}" class="alert alert-info">
+                Bạn chưa viết đánh giá nào.
+            </div>
+
+            <div th:if="${!#lists.isEmpty(reviews)}">
+                <div th:each="review : ${reviews}" class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${review.productName != null ? review.productName : 'Sản phẩm #' + review.productId}"></h5>
+                        <p class="card-text">
+                            <strong>⭐ Đánh giá:</strong> <span th:text="${review.rating}"></span><br />
+                            <strong>🗒️ Nội dung:</strong> <span th:text="${review.comment}"></span><br />
+                            <strong>🕒 Thời gian:</strong> <span th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                        </p>
+
+                        <div class="d-flex gap-2">
+                            <a th:href="@{'/profile/reviews/edit/' + ${review.id}}" class="btn btn-sm btn-warning">✏️ Sửa</a>
+                            <a th:href="@{'/profile/reviews/delete/' + ${review.id}}"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Bạn có chắc muốn xoá đánh giá này không?');">
+                                🗑️ Xoá
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+    </div>
+</div>
+
+</body>
+</html>

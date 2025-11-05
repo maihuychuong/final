@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Chi tiết đơn hàng #[[${order.id}]]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        h2, h5 {
+            font-weight: bold;
+            color: #343a40;
+        }
+        .card {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            color: #0d6efd;
+            margin-bottom: 1rem;
+        }
+        .table {
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .table th, .table td {
+            vertical-align: middle !important;
+            font-size: 0.95rem;
+        }
+        .table thead th {
+            background-color: #f1f3f5;
+        }
+        .badge {
+            font-size: 0.9rem;
+            padding: 0.5em 0.7em;
+            border-radius: 0.5rem;
+        }
+        .btn {
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border: none;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        .text-end {
+            text-align: right;
+        }
+        .container {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .form-select {
+            max-width: 300px;
+        }
+        .order-info p {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        margin: 0.25rem 0;
+        font-size: 1rem;
+        color: #495057;
+    }
+    .order-info strong {
+        font-weight: 600;
+        color: #212529;
+    }
+    .status-update-card {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 1.2rem 1.5rem;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+        max-width: 500px;
+    }
+    .status-update-card h5 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #0d6efd;
+    }
+    .status-update-form {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .form-select {
+        flex: 1 1 auto;
+        max-width: 250px;
+        height: 38px;
+        font-size: 1rem;
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+    }
+    .btn-primary, .btn-danger {
+        min-width: 110px;
+        font-weight: 600;
+    }
+    .btn-danger {
+        margin-top: 0.5rem;
+    }
+        .order-info-table {
+        width: 100%;
+        max-width: 600px;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+        margin-bottom: 2rem;
+        font-size: 1rem;
+        color: #495057;
+    }
+    .order-info-table th, .order-info-table td {
+        padding: 10px 15px;
+        vertical-align: middle;
+        border-radius: 8px;
+    }
+    .order-info-table th {
+        text-align: left;
+        background-color: #e9ecef;
+        font-weight: 600;
+        width: 180px;
+        color: #212529;
+        user-select: none;
+    }
+    .order-info-table td {
+        background-color: #fff;
+        box-shadow: 0 1px 4px rgb(0 0 0 / 0.05);
+    }
+    /* Giữ nguyên style badge nếu cần */
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.4em 0.7em;
+        border-radius: 0.5rem;
+    }
+    </style>
+</head>
+<body>
+<div class="container my-5">
+    <h2>Chi tiết đơn hàng #<span th:text="${order.id}"></span></h2>
+
+    <!-- Thông tin đơn hàng -->
+    <div class="card mb-4 order-info">
+        <div class="card-body">
+            <h5 class="card-title">Thông tin khách hàng</h5>
+            <table class="table table-borderless mb-0">
+                <tbody>
+                <tr>
+                    <th style="width: 180px;">Họ tên</th>
+                    <td th:text="${order.fullName}"></td>
+                </tr>
+                <tr>
+                    <th>Số điện thoại</th>
+                    <td th:text="${order.phoneNumber}"></td>
+                </tr>
+                <tr>
+                    <th>Địa chỉ giao hàng</th>
+                    <td th:text="${order.shippingAddress}"></td>
+                </tr>
+                <tr>
+                    <th>Phương thức thanh toán</th>
+                    <td th:text="${order.paymentMethod.displayName}"></td>
+                </tr>
+                <tr>
+                    <th>Phương thức vận chuyển</th>
+                    <td th:text="${order.shippingMethodType.displayName}"></td>
+                </tr>
+                <tr>
+                    <th>Trạng thái</th>
+                    <td>
+                    <span th:switch="${order.status.name()}">
+                        <span class="badge bg-warning text-dark" th:case="'PENDING'">Đang chờ</span>
+                        <span class="badge bg-primary" th:case="'CONFIRMED'">Đã xác nhận</span>
+                        <span class="badge bg-info text-dark" th:case="'SHIPPED'">Đang giao</span>
+                        <span class="badge bg-success" th:case="'DELIVERED'">Đã giao</span>
+                        <span class="badge bg-danger" th:case="'CANCELLED'">Đã huỷ</span>
+                        <span th:case="*">Không rõ</span>
+                    </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Ghi chú</th>
+                    <td th:text="${order.note != null ? order.note : 'Không có'}"></td>
+                </tr>
+                <tr>
+                    <th>Ngày tạo</th>
+                    <td th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                </tr>
+                <tr>
+                    <th>Ngày cập nhật</th>
+                    <td th:text="${order.updatedAt != null ? #temporals.format(order.updatedAt, 'dd/MM/yyyy HH:mm') : 'Chưa cập nhật'}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Admin: cập nhật trạng thái -->
+    <div class="status-update-card" sec:authorize="hasAuthority('ADMIN')">
+        <h5>Cập nhật trạng thái đơn hàng</h5>
+        <form class="status-update-form mb-3" method="post" th:action="@{'/admin/orders/update-status/' + ${order.id}}">
+            <select class="form-select" name="status" required>
+                <option th:each="s : ${availableStatuses}"
+                        th:selected="${s.name() == order.status.name()}"
+                        th:text="${s.displayName}"
+                        th:value="${s.name()}">
+                </option>
+            </select>
+            <button class="btn btn-primary" type="submit">Cập nhật</button>
+        </form>
+
+        <!-- Admin: huỷ đơn -->
+        <form method="post" onsubmit="return confirm('Bạn chắc chắn muốn huỷ đơn hàng này?');"
+              th:action="@{'/admin/orders/cancel/' + ${order.id}}"
+              th:if="${order.status.name() != 'CANCELLED' and order.status.name() != 'DELIVERED'}">
+            <button class="btn btn-danger w-100" type="submit">Huỷ đơn hàng</button>
+        </form>
+    </div>
+
+    <!-- Danh sách sản phẩm -->
+    <h5 class="mt-4">Danh sách sản phẩm</h5>
+    <table class="table table-bordered align-middle">
+        <thead class="table-light">
+        <tr>
+            <th>STT</th>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detail, iterStat : ${order.orderDetails}">
+            <td th:text="${iterStat.count}"></td>
+            <td th:text="${detail.product.name}"></td>
+            <td th:text="${#numbers.formatDecimal(detail.finalPrice, 0, 'COMMA', 2, 'POINT')} + ' VND'"></td>
+            <td th:text="${detail.quantity}"></td>
+            <td th:text="${#numbers.formatDecimal(detail.totalPrice, 0, 'COMMA', 2, 'POINT')} + ' VND'"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th class="text-end" colspan="4">Tổng tiền:</th>
+            <th th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 2, 'POINT')} + ' VND'"></th>
+        </tr>
+        </tfoot>
+    </table>
+
+    <!-- Nút điều hướng -->
+    <a class="btn btn-secondary" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin(activeTab='orders')}">← Quay lại danh sách</a>
+    <a class="btn btn-secondary" sec:authorize="!hasAuthority('ADMIN')" th:href="@{/orders}">← Quay về danh sách đơn
+        hàng</a>
+    <a class="btn btn-primary ms-2" href="/" sec:authorize="!hasAuthority('ADMIN')">Trang chủ</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const form = document.querySelector('.status-update-form');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function() {
+        submitBtn.disabled = true; // disable nút submit để tránh gửi thêm
+    });
+</script>
+</body>
+</html>

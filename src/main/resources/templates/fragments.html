@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fragments</title>
+</head>
+<body>
+
+<!-- Fragment Header -->
+<div th:fragment="headerFragment">
+    <header class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <h1 class="store-name mb-0">MHC Digital</h1>
+        <nav>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a href="/"
+                       th:class="${activePage == 'home'} ? 'nav-link text-dark fw-semibold active' : 'nav-link text-dark fw-semibold'">
+                        <i class="fa-solid fa-house me-1"></i> Trang chủ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/products"
+                       th:class="${activePage == 'products'} ? 'nav-link text-dark fw-semibold active' : 'nav-link text-dark fw-semibold'">
+                        <i class="fa-solid fa-mobile-screen-button me-1"></i> Sản phẩm
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/about"
+                       th:class="${activePage == 'about'} ? 'nav-link text-dark fw-semibold active' : 'nav-link text-dark fw-semibold'">
+                        <i class="fa-solid fa-info-circle me-1"></i> Giới thiệu
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/contact"
+                       th:class="${activePage == 'contact'} ? 'nav-link text-dark fw-semibold active' : 'nav-link text-dark fw-semibold'">
+                        <i class="fa-solid fa-envelope me-1"></i> Liên hệ
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${not #authorization.expression('isAuthenticated()')}">
+                    <a href="/login"
+                       th:class="${activePage == 'login' or activePage == 'forgot-password' or activePage == 'reset-password'} ? 'nav-link text-dark fw-semibold active' : 'nav-link text-dark fw-semibold'">
+                        <i class="fa-solid fa-right-to-bracket me-1"></i> Đăng nhập
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown me-3" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a aria-expanded="false" class="nav-link position-relative text-dark fw-semibold" data-bs-toggle="dropdown"
+                       href="#" id="notificationDropdown" role="button">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="position-absolute top-0 start-75 translate-middle-y badge rounded-pill bg-danger">
+            [[${unreadCount != null ? unreadCount : 0}]]
+        </span>
+                    </a>
+                    <ul aria-labelledby="notificationDropdown" class="dropdown-menu dropdown-menu-end"
+                        style="width: 300px;">
+                        <li th:if="${#lists.isEmpty(notifications)}">
+                            <span class="dropdown-item text-muted">Không có thông báo</span>
+                        </li>
+                        <li th:each="noti : ${notifications}" th:if="${not noti.isRead}">
+                            <a class="dropdown-item" href="/notifications">
+                                <div>
+                                    <div th:text="${noti.title}"></div>
+                                    <small class="text-muted"
+                                           th:text="${#temporals.format(noti.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-center" href="/notifications">Xem tất cả</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a aria-expanded="false" class="nav-link dropdown-toggle text-dark fw-semibold" data-bs-toggle="dropdown"
+                       href="#">
+                        <i class="fa-solid fa-user me-1"></i> [[${#authentication.name}]]
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li sec:authorize="hasAuthority('ADMIN')">
+                            <a class="dropdown-item" href="/admin"
+                               th:class="${activePage == 'admin'} ? 'dropdown-item active' : 'dropdown-item'">Trang quản trị</a>
+                        </li>
+                        <li sec:authorize="!hasAuthority('ADMIN')">
+                            <a class="dropdown-item" href="/profile"
+                               th:class="${activePage == 'profile'} ? 'dropdown-item active' : 'dropdown-item'">Tài khoản</a>
+                        </li>
+                        <li sec:authorize="!hasAuthority('ADMIN')">
+                            <a class="dropdown-item" href="/cart"
+                               th:class="${activePage == 'cart'} ? 'dropdown-item active' : 'dropdown-item'">Giỏ hàng</a>
+                        </li>
+                        <li sec:authorize="!hasAuthority('ADMIN')">
+                            <a class="dropdown-item" href="/orders"
+                               th:class="${activePage == 'orders'} ? 'dropdown-item active' : 'dropdown-item'">Đơn hàng</a>
+                        </li>
+                        <li sec:authorize="!hasAuthority('ADMIN')">
+                            <a class="dropdown-item" href="/change-password"
+                               th:class="${activePage == 'change-password'} ? 'dropdown-item active' : 'dropdown-item'">Đổi mật khẩu</a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form method="post" style="display: inline;" th:action="@{/logout}">
+                                <button class="dropdown-item w-100 text-start" style="background: none; border: none;"
+                                        type="submit">
+                                    Đăng xuất
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<!-- Fragment Footer -->
+<div th:fragment="footerFragment">
+    <footer class="footer">
+        <p class="text-center mb-0">© 2025 MHC Digital. All rights reserved.</p>
+    </footer>
+</div>
+
+</body>
+</html>

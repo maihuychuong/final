@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đơn hàng của bạn</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/orders.css}"/>
+</head>
+<body>
+<div class="container my-5">
+    <h2 class="mb-4">Đơn hàng của bạn</h2>
+
+    <!-- Thông báo thành công / lỗi -->
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <!-- Bộ lọc trạng thái đơn hàng -->
+    <form method="get" action="#" class="row g-3 align-items-center mb-4">
+        <!-- Lọc trạng thái -->
+        <div class="col-auto">
+            <label for="status" class="col-form-label">Trạng thái:</label>
+        </div>
+        <div class="col-auto">
+            <select id="status" name="status" class="form-select" onchange="this.form.submit()">
+                <option value="">Tất cả</option>
+                <option th:each="st : ${T(com.example.demo.model.enums.OrderStatus).values()}"
+                        th:value="${st.name()}"
+                        th:text="${st.displayName}"
+                        th:selected="${selectedStatus != null and st == selectedStatus}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Tìm theo ngày -->
+        <div class="col-auto">
+            <label for="createdDate" class="col-form-label">Ngày đặt:</label>
+        </div>
+        <div class="col-auto">
+            <input type="date" id="createdDate" name="createdDate"
+                   class="form-control" th:value="${createdDate}">
+        </div>
+
+        <!-- Sắp xếp -->
+        <div class="col-auto">
+            <label for="sort" class="col-form-label">Sắp xếp:</label>
+        </div>
+        <div class="col-auto">
+            <select id="sort" name="sort" class="form-select" onchange="this.form.submit()">
+                <option value="desc" th:selected="${sort == 'desc'}">Mới nhất</option>
+                <option value="asc" th:selected="${sort == 'asc'}">Cũ nhất</option>
+            </select>
+        </div>
+
+        <!-- Nút lọc -->
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </form>
+
+    <!-- Bảng danh sách đơn hàng -->
+    <div th:if="${orders.isEmpty()}" class="alert alert-info">Bạn chưa có đơn hàng nào.</div>
+
+    <table class="table table-bordered table-hover align-middle" th:if="${!orders.isEmpty()}"
+           th:with="OrderStatus=${T(com.example.demo.model.enums.OrderStatus)}">
+        <thead class="table-light">
+        <tr>
+            <th>Mã đơn</th>
+            <th>Ngày đặt</th>
+            <th>Trạng thái</th>
+            <th>Tổng tiền</th>
+            <th>Phương thức thanh toán</th>
+            <th>Ghi chú</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td data-label="Mã đơn" th:text="${order.id}"></td>
+            <td data-label="Ngày đặt" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+            <td data-label="Trạng thái">
+                <span th:switch="${order.status}">
+                    <span th:case="${OrderStatus.PENDING}" class="badge bg-warning text-dark" th:text="${order.status.displayName}">Đang chờ</span>
+                    <span th:case="${OrderStatus.CONFIRMED}" class="badge bg-primary" th:text="${order.status.displayName}">Đã xác nhận</span>
+                    <span th:case="${OrderStatus.SHIPPED}" class="badge bg-info text-dark" th:text="${order.status.displayName}">Đang giao hàng</span>
+                    <span th:case="${OrderStatus.DELIVERED}" class="badge bg-success" th:text="${order.status.displayName}">Đã nhận hàng</span>
+                    <span th:case="${OrderStatus.CANCELLED}" class="badge bg-danger" th:text="${order.status.displayName}">Đã huỷ</span>
+                    <span th:case="*">Không rõ</span>
+                </span>
+            </td>
+            <td data-label="Tổng tiền"
+                th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 2, 'POINT')} + ' VND'"></td>
+            <td data-label="Phương thức thanh toán" th:text="${order.paymentMethod}"></td>
+            <td data-label="Ghi chú" th:text="${order.note != null ? order.note : 'Không có'}"></td>
+            <td data-label="Thao tác">
+                <div class="d-flex flex-column align-items-center gap-2">
+                    <a th:href="@{'/orders/' + ${order.id}}" class="btn btn-info btn-sm w-100">Chi tiết</a>
+
+                    <!-- Nút Huỷ đơn khi trạng thái PENDING -->
+                    <form th:if="${order.status.name() == 'PENDING'}"
+                          th:action="@{'/orders/cancel/' + ${order.id}}"
+                          method="post"
+                          onsubmit="return confirm('Bạn có chắc chắn muốn huỷ đơn hàng này không?');"
+                          class="w-100">
+                        <button type="submit" class="btn btn-danger btn-sm w-100">Huỷ đơn</button>
+                    </form>
+
+                    <!-- Nút Thanh toán khi trạng thái CONFIRMED -->
+                    <a th:if="${order.status.name() == 'CONFIRMED' and (order.paymentMethod.name() == 'BANK_TRANSFER' or order.paymentMethod.name() == 'CREDIT_CARD')}"
+                       th:href="'https://zalo.me/0343875561'"
+                       class="btn btn-success btn-sm w-100"
+                       target="_blank">
+                        Thanh toán
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Nút quay về trang chủ ở dưới -->
+    <div class="mt-4">
+        <a href="/" class="btn btn-secondary">← Quay về trang chủ</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

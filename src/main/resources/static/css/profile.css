@@ -1,0 +1,307 @@
+/* profile.css */
+
+/* Định dạng chung */
+body {
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom, #e8ecef 0%, #d1d9e6 100%);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Nút Trang chủ */
+.btn-home {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    background: #ffffff;
+    color: #2c3e50;
+    border-radius: 50px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1050;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-home:hover {
+    background: #3498db;
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Container chính */
+.profile-container {
+    max-width: 750px;
+    width: 100%;
+    padding: 40px;
+    background: transparent;
+    position: relative;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Phần thông tin tài khoản */
+.profile-info {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 35px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.profile-info:hover {
+    transform: translateY(-5px);
+}
+
+/* Tiêu đề chính */
+.profile-info h2 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 0.5px;
+    position: relative;
+}
+
+.profile-info h2::after {
+    content: '';
+    width: 60px;
+    height: 3px;
+    background: #3498db;
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Form hàng */
+.row.align-items-center {
+    margin-bottom: 20px;
+}
+
+.col-form-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #34495e;
+}
+
+/* Input */
+.form-control {
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 0.95rem;
+    border: 1px solid #dfe6e9;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+    background: #ffffff;
+}
+
+.form-control:disabled {
+    background: #e9ecef;
+    color: #6c757d;
+}
+
+/* Nút Cập nhật */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    background: #3498db;
+    border: none;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(41, 128, 185, 0.3);
+}
+
+/* Thông báo */
+.alert {
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    border: none;
+    background: #dfe6e9;
+    color: #2c3e50;
+}
+
+.alert-success {
+    background: #27ae60;
+    color: #ffffff;
+}
+
+.alert-danger {
+    background: #e74c3c;
+    color: #ffffff;
+}
+
+.alert-info {
+    background: #3498db;
+    color: #ffffff;
+}
+
+/* Phần đánh giá */
+.review-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 35px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.review-section:hover {
+    transform: translateY(-5px);
+}
+
+.review-section h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.review-section h3::after {
+    content: '';
+    width: 50px;
+    height: 3px;
+    background: #3498db;
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+}
+
+/* Card đánh giá */
+.review-section .card {
+    border: none;
+    border-radius: 12px;
+    background: #f8f9fa;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.review-section .card:hover {
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+.review-section .card-body {
+    padding: 25px;
+}
+
+.review-section .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #3498db;
+    margin-bottom: 12px;
+}
+
+.review-section .card-text {
+    font-size: 0.9rem;
+    color: #34495e;
+    line-height: 1.6;
+}
+
+/* Nút Sửa và Xoá */
+.review-section .btn-sm {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.review-section .btn-warning {
+    background: #f1c40f;
+    border: none;
+    color: #2c3e50;
+}
+
+.review-section .btn-warning:hover {
+    background: #d4ac0d;
+    transform: translateY(-2px);
+}
+
+.review-section .btn-danger {
+    background: #e74c3c;
+    border: none;
+}
+
+.review-section .btn-danger:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .profile-container {
+        padding: 20px;
+        margin: 1rem;
+    }
+
+    .profile-info, .review-section {
+        padding: 20px;
+    }
+
+    .btn-home {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .profile-info h2 {
+        font-size: 1.6rem;
+    }
+
+    .review-section h3 {
+        font-size: 1.4rem;
+    }
+
+    .form-control {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .btn-primary {
+        font-size: 0.9rem;
+        padding: 12px;
+    }
+
+    .review-section .card-title {
+        font-size: 1rem;
+    }
+
+    .review-section .card-text {
+        font-size: 0.85rem;
+    }
+}

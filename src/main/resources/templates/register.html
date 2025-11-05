@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký | MHC Digital</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-box {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .register-box h2 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 0.5rem;
+        }
+
+        .btn-register {
+            background-color: #11998e;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-register:hover {
+            background-color: #0d776e;
+        }
+    </style>
+</head>
+<body>
+<a href="/" class="btn btn-light position-absolute top-0 start-0 m-3 shadow-sm">
+    <i class="fa-solid fa-house me-1"></i> Trang chủ
+</a>
+
+<div class="register-box">
+    <h2><i class="fa-solid fa-user-plus me-2"></i>Đăng ký tài khoản</h2>
+
+    <!-- Hiển thị lỗi nếu có -->
+    <div th:if="${error}" class="alert alert-danger" role="alert" style="margin-bottom: 1rem;">
+        <i class="fa-solid fa-triangle-exclamation me-1"></i>
+        <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{/register}" th:object="${user}" method="post" novalidate>
+        <input type="hidden" th:field="*{role}" />
+
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Họ và tên</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-id-card"></i></span>
+                <input type="text" th:field="*{fullName}" class="form-control" id="fullName" required />
+            </div>
+            <div th:if="${#fields.hasErrors('fullName')}" class="text-danger small" th:errors="*{fullName}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Số điện thoại</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                <input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneNumber" required />
+            </div>
+            <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger small" th:errors="*{phoneNumber}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="username" class="form-label">Tên đăng nhập</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                <input type="text" th:field="*{username}" class="form-control" id="username" required />
+            </div>
+            <div th:if="${#fields.hasErrors('username')}" class="text-danger small" th:errors="*{username}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                <input type="email" th:field="*{email}" class="form-control" id="email" required />
+            </div>
+            <div th:if="${#fields.hasErrors('email')}" class="text-danger small" th:errors="*{email}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                <input type="password" th:field="*{password}" class="form-control" id="password" required />
+            </div>
+            <div th:if="${#fields.hasErrors('password')}" class="text-danger small" th:errors="*{password}"></div>
+        </div>
+
+        <div class="mb-4">
+            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                <input type="password" th:field="*{confirmPassword}" class="form-control" id="confirmPassword" required />
+            </div>
+            <div th:if="${#fields.hasErrors('confirmPassword')}" class="text-danger small" th:errors="*{confirmPassword}"></div>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-register btn-lg">
+                <i class="fa-solid fa-user-check me-1"></i> Đăng ký
+            </button>
+        </div>
+
+        <div class="text-center mt-4">
+            <span>Đã có tài khoản? </span><a href="/login" class="text-decoration-none">Đăng nhập</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

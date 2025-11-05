@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Chỉnh sửa sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        input.form-control {
+            border: 1.5px solid #ced4da;
+            transition: border-color 0.3s ease;
+        }
+
+        input.form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 6px rgba(13, 110, 253, 0.25);
+        }
+
+        button.btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            transition: background-color 0.3s ease;
+        }
+
+        button.btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+
+        a.btn-secondary {
+            color: #6c757d;
+            border-color: #6c757d;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        a.btn-secondary:hover {
+            color: #495057;
+            background-color: #e2e6ea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Chỉnh sửa sản phẩm</h2>
+    <form th:action="@{/admin/products/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
+        <input type="hidden" name="_method" value="put" />
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Tên sản phẩm</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Nhập tên sản phẩm" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="brand" class="form-label">Thương hiệu</label>
+            <input type="text" th:field="*{brand}" class="form-control" id="brand" placeholder="Nhập thương hiệu" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Giá gốc</label>
+            <input type="number" step="0.01" th:field="*{price}" class="form-control" id="price" placeholder="Nhập giá gốc" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="discountPercent" class="form-label">Giảm giá (%)</label>
+            <input type="number" min="0" max="100" th:field="*{discountPercent}" class="form-control" id="discountPercent" placeholder="Nhập phần trăm giảm giá"/>
+        </div>
+
+        <div class="mb-3">
+            <label for="stock" class="form-label">Tồn kho</label>
+            <input type="number" th:field="*{stock}" class="form-control" id="stock" placeholder="Nhập tồn kho" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="imageUrl" class="form-label">Đường dẫn ảnh</label>
+            <input type="text" th:field="*{imageUrl}" class="form-control" id="imageUrl" placeholder="Nhập URL ảnh sản phẩm"/>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Mô tả sản phẩm</label>
+            <textarea th:field="*{description}" class="form-control" id="description" rows="4" placeholder="Nhập mô tả sản phẩm"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="createdAt" class="form-label">Ngày tạo</label>
+            <input type="datetime-local" th:field="*{createdAt}" class="form-control" id="createdAt" readonly/>
+        </div>
+
+        <div class="mb-3">
+            <label for="updatedAt" class="form-label">Ngày cập nhật gần nhất</label>
+            <input type="datetime-local" th:field="*{updatedAt}" class="form-control" id="updatedAt" readonly/>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a th:href="@{/admin(activeTab='products')}" class="btn btn-secondary ms-2">Hủy</a>
+    </form>
+</div>
+</body>
+</html>

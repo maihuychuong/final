@@ -1,0 +1,174 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+
+.cart-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #343a40;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.cart-table th,
+.cart-table td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+}
+
+.cart-table th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #495057;
+}
+
+.cart-table td span {
+    font-weight: 500;
+    color: #212529;
+}
+
+.total-label {
+    text-align: right;
+    font-weight: bold;
+    background-color: #f8f9fa;
+}
+
+.total-price {
+    font-weight: bold;
+    color: #e83e8c;
+    background-color: #f8f9fa;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cart-actions .btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.cart-actions .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+
+.cart-actions .btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.cart-actions .btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.cart-actions .btn-primary:hover {
+    background-color: #0069d9;
+}
+
+.cart-table input[type="text"] {
+    width: 50px;
+    border: none;
+    background-color: #f1f3f5;
+    text-align: center;
+    font-weight: bold;
+}
+
+.cart-table form button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
+
+.product-name-tooltip {
+    position: relative;
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline dotted;
+}
+
+.product-name-tooltip:hover::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 10px);
+    width: 200px;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    background-image: attr(data-img url);
+    z-index: 10;
+}
+
+/* Fix cho Chrome không hỗ trợ attr(data-img url) trực tiếp */
+.product-name-tooltip::after {
+    display: none;
+    content: '';
+}
+
+.product-name-tooltip:hover::after {
+    display: block;
+}
+
+.product-image-tooltip {
+  position: absolute;
+  top: 100%;  /* Hiển thị ngay dưới tên sản phẩm */
+  left: 50%;  /* Căn giữa theo chiều ngang */
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: none;
+  max-width: 200px;
+  max-height: 200px;
+  border: 1px solid #ddd;
+  background: white;
+  padding: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+
+.cart-table td form button.btn-danger {
+    width: 100%;       /* Nút chiếm hết chiều rộng của ô */
+    height: 100%;      /* Nút chiếm hết chiều cao của ô */
+    padding: 5px 0;    /* Tăng giảm padding phù hợp */
+    font-size: 14px;   /* Tùy chỉnh font size cho vừa */
+    box-sizing: border-box; /* Đảm bảo padding không làm rộng thêm */
+}

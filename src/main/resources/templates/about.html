@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Giới thiệu - MHC Digital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<div class="container py-4">
+    <!-- Header fragment -->
+    <div th:replace="fragments :: headerFragment"></div>
+
+    <!-- Main content wrapper -->
+    <div class="main-content">
+        <section class="about">
+            <h2 class="text-center mb-4">Về MHC Digital</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <p class="lead text-center mb-4">
+                        MHC Digital là cửa hàng trực tuyến hàng đầu cung cấp các sản phẩm điện tử hiện đại, từ điện thoại thông minh đến phụ kiện công nghệ cao. Thành lập với sứ mệnh mang đến trải nghiệm mua sắm tiện lợi và đáng tin cậy, chúng tôi cam kết chất lượng sản phẩm và dịch vụ khách hàng vượt trội.
+                    </p>
+                    <p class="lead text-center mb-4">
+                        Đội ngũ của chúng tôi luôn nỗ lực cập nhật những xu hướng công nghệ mới nhất, đảm bảo bạn nhận được những sản phẩm tốt nhất với mức giá cạnh tranh. Hãy tham gia cùng hàng ngàn khách hàng hài lòng và khám phá thế giới công nghệ tại MHC Digital!
+                    </p>
+                    <div class="text-center">
+                        <i class="fa-solid fa-store fa-3x mb-3"></i>
+                        <p><strong>Địa chỉ:</strong> 9 Định Công, Hoàng Mai, TP. Hà Nội</p>
+                        <p><strong>Email:</strong> maihuychuong78@gmail.com</p>
+                        <p><strong>Hotline:</strong> 0343875561</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer fragment -->
+    <div th:replace="fragments :: footerFragment"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

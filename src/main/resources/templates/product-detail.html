@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${product.name} + ' - Chi tiết sản phẩm'">Chi tiết sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container py-4">
+    <!-- Header fragment -->
+    <div th:replace="fragments :: headerFragment"></div>
+
+    <!-- Main content wrapper -->
+    <div class="main-content">
+        <div class="row">
+            <div class="col-md-12 product-container">
+                <img th:src="@{'/images/' + ${product.imageUrl}}"
+                     class="product-image rounded mb-4"
+                     alt="Ảnh sản phẩm"
+                     th:if="${product.imageUrl != null and not #strings.isEmpty(product.imageUrl)}" />
+
+                <h1 th:text="${product.name}" class="product-name"></h1>
+
+                <div class="product-price mb-3">
+                    <!-- Nếu sản phẩm hết hàng -->
+                    <span th:if="${product.stock == null or product.stock == 0}"
+                          class="text-danger fw-bold fs-5">
+                        Hết hàng
+                    </span>
+
+                    <!-- Nếu sản phẩm còn hàng -->
+                    <div th:if="${product.stock != null and product.stock > 0}">
+                        <!-- Giá gốc -->
+                        <span th:if="${product.discountPercent != null and product.discountPercent > 0}"
+                              class="product-detail-price-original"
+                              th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA')} + ' VND'"></span>
+
+                        <!-- Giá sau chiết khấu -->
+                        <span class="product-detail-price-discounted"
+                              th:text="${#numbers.formatDecimal(product.priceAfterDiscount, 0, 'POINT', 0, 'COMMA')} + ' VND'"></span>
+
+                        <!-- Badge phần trăm chiết khấu -->
+                        <span th:if="${product.discountPercent != null and product.discountPercent > 0}"
+                              class="product-detail-discount-badge"
+                              th:text="'-' + ${product.discountPercent} + '%'"></span>
+
+                        <!-- Số lượng hàng còn lại -->
+                        <span class="product-stock text-muted"
+                              th:text="'Số lượng còn lại: ' + ${product.stock} + ' chiếc'"></span>
+                    </div>
+                </div>
+
+                <p class="product-description" th:text="${product.description}">Mô tả sản phẩm...</p>
+
+                <div class="mb-4">
+                    <!-- Nếu đã đăng nhập và còn hàng -->
+                    <form th:if="${#authorization.expression('isAuthenticated()') and product.stock != null and product.stock > 0}"
+                          th:action="@{/cart/add}"
+                          method="post">
+                        <input type="hidden" name="productId" th:value="${product.id}" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-cart btn-success btn-lg fw-semibold">
+                            <i class="fa-solid fa-cart-plus me-2"></i> Thêm vào giỏ hàng
+                        </button>
+                    </form>
+
+                    <!-- Nếu đã đăng nhập nhưng hết hàng -->
+                    <button th:if="${#authorization.expression('isAuthenticated()') and (product.stock == null or product.stock == 0)}"
+                            class="btn btn-cart btn-secondary btn-lg fw-semibold" disabled>
+                        <i class="fa-solid fa-cart-plus me-2"></i> Hết hàng
+                    </button>
+
+                    <!-- Nếu chưa đăng nhập -->
+                    <a th:if="${not #authorization.expression('isAuthenticated()')}"
+                       href="/login"
+                       class="btn btn-cart btn-success btn-lg fw-semibold">
+                        <i class="fa-solid fa-cart-plus me-2"></i> Đăng nhập để mua hàng
+                    </a>
+                </div>
+
+                <!-- Thông số kỹ thuật -->
+                <h5 class="mt-4 mb-3">Thông số kỹ thuật</h5>
+                <table class="table table-bordered table-striped spec-table">
+                    <tbody>
+                    <tr th:each="spec : ${product.specifications}">
+                        <th scope="row" class="w-50" th:text="${spec.specType.name}">Tên thông số</th>
+                        <td th:text="${spec.specValue}">Giá trị</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Đánh giá sản phẩm -->
+        <div class="mt-5">
+            <h4 class="mb-3">Đánh giá sản phẩm</h4>
+
+            <!-- Hiển thị thông báo đánh giá -->
+            <div th:if="${reviewSuccess}" class="alert alert-success" th:text="${reviewSuccess}"></div>
+            <div th:if="${reviewError}" class="alert alert-danger" th:text="${reviewError}"></div>
+
+            <!-- Nếu không có đánh giá -->
+            <p th:if="${#lists.isEmpty(reviews)}" class="text-muted">Chưa có đánh giá nào cho sản phẩm này.</p>
+
+            <!-- Danh sách đánh giá -->
+            <div class="review-list" th:each="review : ${reviews}">
+                <div class="border rounded p-3 mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <strong th:text="${review.username}">Người dùng</strong>
+                        <small th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy HH:mm')}">01/06/2025</small>
+                    </div>
+                    <div class="mb-2">
+                        <span th:each="i : ${#numbers.sequence(1, 5)}">
+                            <i class="fa-star"
+                               th:classappend="${i <= review.rating} ? 'fa-solid text-warning' : 'fa-regular text-muted'"></i>
+                        </span>
+                    </div>
+                    <p th:text="${review.comment}">Nội dung đánh giá...</p>
+                </div>
+            </div>
+
+            <!-- Nếu người dùng đã đăng nhập, hiển thị form đánh giá -->
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <form th:action="@{/profile/reviews/add}" method="post" class="mt-4">
+                    <input type="hidden" name="productId" th:value="${product.id}"/>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <div class="mb-3">
+                        <label class="form-label">Đánh giá (sao):</label>
+                        <select name="rating" class="form-select w-auto" required>
+                            <option value="5">5 sao</option>
+                            <option value="4">4 sao</option>
+                            <option value="3">3 sao</option>
+                            <option value="2">2 sao</option>
+                            <option value="1">1 sao</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Bình luận:</label>
+                        <textarea name="comment" class="form-control" rows="3" placeholder="Nhập nhận xét của bạn..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-paper-plane me-1"></i> Gửi đánh giá
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer fragment -->
+    <div th:replace="fragments :: footerFragment"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
