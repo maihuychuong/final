@@ -40,7 +40,11 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - Tổng quát  
 ![](screenshots/0.png)  
    - Quản trị viên  
-![](screenshots/0.png)  
+![](screenshots/Admin.png)  
+   - Khách hàng  
+![](screenshots/Admin.png)  
+
+
 
 
 
