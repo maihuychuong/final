@@ -4,7 +4,8 @@ TRANG WEB BÁN ĐIỆN THOẠI
    Về mặt chức năng:
    - Website cho phép khách hàng xem, tìm kiếm sản phẩm, thêm giỏ hàng, đặt hàng.
    - Hệ thống quản trị (admin) quản lý toàn bộ dữ liệu về sản phẩm, đơn hàng, khách hàng.
-   - Hệ thống hỗ trợ thống kê, báo cáo doanh thu, sản phẩm bán chạy.
+   - Hệ thống hỗ trợ thống kê, báo cáo doanh thu, sản phẩm bán chạy.  
+
    Về kỹ thuật:
    - Phát triển theo mô hình 3 lớp: Controller – Service – Repository.
    - Áp dụng Spring Boot để xây dựng backend mạnh mẽ, bảo mật, mở rộng dễ dàng.
@@ -78,6 +79,7 @@ TRANG WEB BÁN ĐIỆN THOẠI
 ![](screenshots/15.png)  
    - Giao diện báo cáo thống kê của trang admin
 ![](screenshots/16.png)  
+
 
 
 
