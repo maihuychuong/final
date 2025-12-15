@@ -42,7 +42,7 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - Quản trị viên  
 ![](screenshots/Admin.png)  
    - Khách hàng  
-![](screenshots/1.png)  
+![](screenshots/khachhang.png)  
 
 5. Ảnh demo
    - Giao diện đăng nhập    
@@ -65,6 +65,7 @@ TRANG WEB BÁN ĐIỆN THOẠI
 ![](screenshots/0.png)  
    - Giao diện giỏ hàng của khách hàng  
 ![](screenshots/0.png)  
+
 
 
 
