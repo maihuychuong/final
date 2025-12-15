@@ -1,6 +1,6 @@
 TRANG WEB BÁN ĐIỆN THOẠI
 
-1. Đề tài hướng đến việc thiết kế và xây dựng hệ thống website bán điện thoại, cụ thể đạt được các mục tiêu sau:
+1. Đề tài hướng đến việc thiết kế và xây dựng hệ thống website bán điện thoại, cụ thể đạt được các mục tiêu sau:  
    Về mặt chức năng:
    - Website cho phép khách hàng xem, tìm kiếm sản phẩm, thêm giỏ hàng, đặt hàng.
    - Hệ thống quản trị (admin) quản lý toàn bộ dữ liệu về sản phẩm, đơn hàng, khách hàng.
@@ -79,6 +79,7 @@ TRANG WEB BÁN ĐIỆN THOẠI
 ![](screenshots/15.png)  
    - Giao diện báo cáo thống kê của trang admin
 ![](screenshots/16.png)  
+
 
 
 
