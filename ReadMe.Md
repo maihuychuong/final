@@ -30,21 +30,14 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - Thống kê doanh thu theo tháng, năm
 
 3. Công nghệ sử dụng
-   • Ngôn ngữ lập trình Java
-   • Spring Boot
-   • Thymeleaf
-   • Bootstrap
-   • MySQL
-
-   Công cụ hỗ trợ
-   Công cụ | Mục đích sử dụng
-   IntelliJ IDEA / Eclipse | Viết và quản lý mã nguồn Java, tích hợp Spring Boot
-   Postman | Kiểm thử API REST, mô phỏng các request client
-   Git / GitHub | Quản lý phiên bản mã nguồn, lưu trữ dự án
-   Maven | Quản lý thư viện và build ứng dụng Java
-   MySQL Workbench | Quản lý cơ sở dữ liệu, thực thi truy vấn SQL
-   Browser (Chrome/Edge) | Kiểm tra giao diện, phản hồi trang web
+   - Ngôn ngữ lập trình Java
+   - Spring Boot
+   - Thymeleaf
+   - Bootstrap
+   - MySQL
 
 4. Biểu đồ Use-case
    Tổng quát
+
+
 
