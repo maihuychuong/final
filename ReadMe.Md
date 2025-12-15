@@ -38,7 +38,8 @@ TRANG WEB BÁN ĐIỆN THOẠI
 
 4. Biểu đồ Use-case 
    - Tổng quát
-![Home Page](screenshots/0.png)
+![](screenshots/0.png)
+
 
 
 
