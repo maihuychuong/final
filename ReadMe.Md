@@ -42,8 +42,29 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - Quản trị viên  
 ![](screenshots/Admin.png)  
    - Khách hàng  
-![](screenshots/Admin.png)  
+![](screenshots/1.png)  
 
+5. Ảnh demo
+   - Giao diện đăng nhập    
+![](screenshots/0.png)  
+   - Giao diện đăng ký    
+![](screenshots/0.png)  
+   - Giao diện trang chủ   
+![](screenshots/0.png)  
+   - Giao diện trang sản phẩm  
+![](screenshots/0.png)  
+   - Giao diện trang giới thiệu về trang web  
+![](screenshots/0.png)  
+   - Giao diện trang liên hệ của trang web  
+![](screenshots/0.png)  
+   - Giao diện trang  chi tiết sản phẩm  
+![](screenshots/0.png)  
+   - Giao diện phần  đánh giá và bình luận  
+![](screenshots/0.png)  
+   - Giao diện quản lí tài khoản của khách hàng  
+![](screenshots/0.png)  
+   - Giao diện giỏ hàng của khách hàng  
+![](screenshots/0.png)  
 
 
 
