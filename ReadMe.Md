@@ -47,25 +47,37 @@ TRANG WEB BÁN ĐIỆN THOẠI
 
 5. Ảnh demo
    - Giao diện đăng nhập    
-![](screenshots/0.png)  
+![](screenshots/1.png)  
    - Giao diện đăng ký    
-![](screenshots/0.png)  
+![](screenshots/2.png)  
    - Giao diện trang chủ   
-![](screenshots/0.png)  
+![](screenshots/3.png)  
    - Giao diện trang sản phẩm  
-![](screenshots/0.png)  
+![](screenshots/4.png)  
    - Giao diện trang giới thiệu về trang web  
-![](screenshots/0.png)  
+![](screenshots/5.png)  
    - Giao diện trang liên hệ của trang web  
-![](screenshots/0.png)  
+![](screenshots/6.png)  
    - Giao diện trang  chi tiết sản phẩm  
-![](screenshots/0.png)  
+![](screenshots/7.png)  
    - Giao diện phần  đánh giá và bình luận  
-![](screenshots/0.png)  
+![](screenshots/8.png)  
    - Giao diện quản lí tài khoản của khách hàng  
-![](screenshots/0.png)  
+![](screenshots/9.png)  
    - Giao diện giỏ hàng của khách hàng  
-![](screenshots/0.png)  
+![](screenshots/10.png)  
+   - Giao diện đơn hàng của khách hàng  
+![](screenshots/11.png)  
+   - Giao diện chính của trang admin  
+![](screenshots/12.png)  
+   - Giao diện quản lí sản phẩm của trang admin
+![](screenshots/13.png)  
+   - Giao diện quản lí đơn hàng của trang admin  
+![](screenshots/14.png)  
+   - Giao diện quản lí khách hàng của trang admin  
+![](screenshots/15.png)  
+   - Giao diện báo cáo thống kê của trang admin
+![](screenshots/16.png)  
 
 
 
