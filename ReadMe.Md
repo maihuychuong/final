@@ -46,7 +46,10 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - Khách hàng  
 ![](screenshots/khachhang.png)  
 
-5. Ảnh demo
+5. Database  
+![](screenshots/database.png)  
+
+6. Ảnh demo
    - Giao diện đăng nhập    
 ![](screenshots/1.png)  
    - Giao diện đăng ký    
@@ -79,6 +82,7 @@ TRANG WEB BÁN ĐIỆN THOẠI
 ![](screenshots/15.png)  
    - Giao diện báo cáo thống kê của trang admin
 ![](screenshots/16.png)  
+
 
 
 
