@@ -21,6 +21,7 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - Đặt hàng, nhập thông tin nhận hàng
    - Xem trạng thái đơn hàng đã đặt
    - Hủy đơn hàng nếu chưa xử lý  
+
    Chức năng dành cho quản trị viên (admin):  
    - Đăng nhập admin
    - Quản lý sản phẩm: thêm – sửa – xoá
@@ -65,6 +66,7 @@ TRANG WEB BÁN ĐIỆN THOẠI
 ![](screenshots/0.png)  
    - Giao diện giỏ hàng của khách hàng  
 ![](screenshots/0.png)  
+
 
 
 
