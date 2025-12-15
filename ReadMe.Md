@@ -12,16 +12,16 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - Áp dụng Spring Data JPA thao tác với cơ sở dữ liệu một cách tối ưu.
    - Hệ thống có thể triển khai dễ dàng trên hosting hoặc máy chủ nội bộ.
 
-2. Chức năng của phần mềm
-   Chức năng dành cho khách hàng:
+2. Chức năng của phần mềm  
+   Chức năng dành cho khách hàng:  
    - Đăng ký / đăng nhập tài khoản
    - Duyệt sản phẩm theo danh mục, hãng, giá
    - Xem chi tiết sản phẩm
    - Thêm sản phẩm vào giỏ hàng
    - Đặt hàng, nhập thông tin nhận hàng
    - Xem trạng thái đơn hàng đã đặt
-   - Hủy đơn hàng nếu chưa xử lý
-   Chức năng dành cho quản trị viên (admin):
+   - Hủy đơn hàng nếu chưa xử lý  
+   Chức năng dành cho quản trị viên (admin):  
    - Đăng nhập admin
    - Quản lý sản phẩm: thêm – sửa – xoá
    - Quản lý danh mục sản phẩm (Samsung, iPhone…)
@@ -65,6 +65,7 @@ TRANG WEB BÁN ĐIỆN THOẠI
 ![](screenshots/0.png)  
    - Giao diện giỏ hàng của khách hàng  
 ![](screenshots/0.png)  
+
 
 
 
