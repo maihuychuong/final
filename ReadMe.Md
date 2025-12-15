@@ -36,8 +36,10 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - Bootstrap
    - MySQL
 
-4. Biểu đồ Use-case
-   Tổng quát
+4. Biểu đồ Use-case 
+   - Tổng quát
+
+
 
 
 
