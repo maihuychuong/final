@@ -37,8 +37,13 @@ TRANG WEB BÁN ĐIỆN THOẠI
    - MySQL
 
 4. Biểu đồ Use-case 
-   - Tổng quát
--![](screenshots/0.png)
+   - Tổng quát  
+![](screenshots/0.png)  
+   - Quản trị viên  
+![](screenshots/0.png)  
+
+
+
 
 
 
